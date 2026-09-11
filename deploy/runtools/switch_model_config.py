@@ -112,8 +112,42 @@ class AbstractSwitchToSwitchConfig:
         mac2port_pythonarray = self.fsimswitchnode.switch_table
         assert mac2port_pythonarray is not None
 
+        # Fix for Recursive Doubling Accelerator MACs
+        # The switch simulator crashes if the MAC address is out of bounds of the array,
+        # or if it maps to a port that doesn't exist.
+        # We increase the size to cover the typical 16-bit MAC LSB range.
+        MAC_ARRAY_SIZE = 65536
+        broadcast_val = 0xFFFF # BROADCAST_ADJUSTED
+
+        # Initialize with broadcast (safe)
+        full_mapping = [broadcast_val] * MAC_ARRAY_SIZE
+
+        # Copy existing mapping (Node/Tester MACs)
+        # Note: switch_table indices correspond to MAC addresses
+        for mac, port in enumerate(mac2port_pythonarray):
+            full_mapping[mac] = port
+
+        # Add explicit mapping for Accelerator MACs (Offset 0x22)
+        # Assuming 8 nodes, map 0x22+i -> Port i
+        # This allows traffic destined to Accel MAC to reach the correct node.
+        ACCEL_MAC_OFFSET = 0x22
+        for i in range(8):
+            full_mapping[ACCEL_MAC_OFFSET + i] = i
+
+        # Add explicit mapping for Tester MACs (Offset 0x02)
+        # Required for return traffic (accelerator -> CPU)
+        TESTER_MAC_OFFSET = 0x02
+        for i in range(8):
+            full_mapping[TESTER_MAC_OFFSET + i] = i  # 0x02→Port0, 0x03→Port1, etc.
+
+        # Add explicit mapping for PyTorch Host MACs (Offset 0x12)
+        # Required for PyTorch UDP offload traffic
+        PYTORCH_MAC_OFFSET = 0x12
+        for i in range(8):
+            full_mapping[PYTORCH_MAC_OFFSET + i] = i  # 0x12→Port0, 0x13→Port1, etc.
+
         commaseparated = ""
-        for elem in mac2port_pythonarray:
+        for elem in full_mapping:
             commaseparated += str(elem) + ", "
 
         # remove extraneous ", "
@@ -125,7 +159,7 @@ class AbstractSwitchToSwitchConfig:
     uint16_t mac2port[{}]  {}
     #endif
     """.format(
-            len(mac2port_pythonarray), commaseparated
+            MAC_ARRAY_SIZE, commaseparated
         )
         return retstr
 
