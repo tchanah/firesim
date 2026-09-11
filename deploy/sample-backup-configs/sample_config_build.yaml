@@ -15,7 +15,7 @@ build_farm:
 builds_to_run:
     # this section references builds defined in config_build_recipes.yaml
     # if you add a build here, it will be built when you run buildbitstream
-    - midasexamples_gcd
+    - alveo_u250_firesim_recursivedoublingforchunks
 
 agfis_to_share:
     - midasexamples_gcd

@@ -9,7 +9,7 @@ args:
     default_platform: EC2InstanceDeployManager
 
     # REQUIRED: default directory where simulations are run out of on the run farm hosts
-    default_simulation_dir: /home/ubuntu
+    default_simulation_dir: /scratch/chettige/FIRESIM_RUNS_DIR
 
     # REQUIRED: default fpga db file that enumerates what fpgas are available on the machine (used by XilinxU* Deploy Managers)
     default_fpga_db: /opt/firesim-db.json
@@ -25,7 +25,7 @@ args:
     #     # by "four_fpgas_spec" below.
     #     - "111.111.1.111": four_fpgas_spec
     run_farm_hosts_to_use:
-        - localhost: one_fpgas_spec
+        - localhost: eight_fpgas_spec
     # managerinit arg end
 
     # REQUIRED: List of host "specifications", i.e. re-usable collections of

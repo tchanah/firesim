@@ -22,8 +22,8 @@ metasimulation:
 
 # DOCREF START: target_config area
 target_config:
-    topology: no_net_config
-    no_net_num_nodes: 1
+    topology: example_8config
+    no_net_num_nodes: 8
     link_latency: 6405
     switching_latency: 10
     net_bandwidth: 200
@@ -33,13 +33,13 @@ target_config:
     # or from config_build_recipes.yaml for metasimulation
     # In homogeneous configurations, use this to set the hardware config deployed
     # for all simulators
-    default_hw_config: midasexamples_gcd
+    default_hw_config: alveo_u250_firesim_recursivedoublingforchunks
 
     # Advanced: Specify any extra plusargs you would like to provide when
     # booting the simulator (in both FPGA-sim and metasim modes). This is
     # a string, with the contents formatted as if you were passing the plusargs
     # at command line, e.g. "+a=1 +b=2"
-    plusarg_passthrough: ""
+    plusarg_passthrough: "+print-file=synthesized-prints.out"
 # DOCREF END: target_config area
 
 tracing:
@@ -61,9 +61,9 @@ autocounter:
     read_rate: 0
 
 workload:
-    workload_name: null.json
-    terminate_on_completion: no
-    suffix_tag: null
+    workload_name: recursivedoubling_throughput.json
+    terminate_on_completion: yes
+    suffix_tag: recursivedoubling-throughput
 
 host_debug:
     # When enabled (=yes), Zeros-out FPGA-attached DRAM before simulations
