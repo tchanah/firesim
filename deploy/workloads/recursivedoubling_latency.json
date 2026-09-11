@@ -1,0 +1,42 @@
+{
+    "benchmark_name": "recursivedoubling_latency",
+    "common_simulation_outputs": [
+        "uartlog",
+        "synthesized-prints.out0"
+    ],
+    "common_rootfs": "../../../../../software/firemarshal/boards/default/installers/firesim/dummy.rootfs",
+    "workloads": [
+        {
+            "name": "node0",
+            "bootbinary": "../../../../../tests/build/rdlatency-node0.riscv"
+        },
+        {
+            "name": "node1",
+            "bootbinary": "../../../../../tests/build/rdlatency-node1.riscv"
+        },
+        {
+            "name": "node2",
+            "bootbinary": "../../../../../tests/build/rdlatency-node2.riscv"
+        },
+        {
+            "name": "node3",
+            "bootbinary": "../../../../../tests/build/rdlatency-node3.riscv"
+        },
+        {
+            "name": "node4",
+            "bootbinary": "../../../../../tests/build/rdlatency-node4.riscv"
+        },
+        {
+            "name": "node5",
+            "bootbinary": "../../../../../tests/build/rdlatency-node5.riscv"
+        },
+        {
+            "name": "node6",
+            "bootbinary": "../../../../../tests/build/rdlatency-node6.riscv"
+        },
+        {
+            "name": "node7",
+            "bootbinary": "../../../../../tests/build/rdlatency-node7.riscv"
+        }
+    ]
+}

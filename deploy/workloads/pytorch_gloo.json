@@ -1,0 +1,42 @@
+{
+    "benchmark_name": "pytorch_gloo",
+    "common_simulation_outputs": [
+        "uartlog",
+        "synthesized-prints.out0"
+    ],
+    "common_rootfs": "../../../../../software/firemarshal/boards/default/installers/firesim/dummy.rootfs",
+    "workloads": [
+        {
+            "name": "node0",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node0.riscv"
+        },
+        {
+            "name": "node1",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node1.riscv"
+        },
+        {
+            "name": "node2",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node2.riscv"
+        },
+        {
+            "name": "node3",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node3.riscv"
+        },
+        {
+            "name": "node4",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node4.riscv"
+        },
+        {
+            "name": "node5",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node5.riscv"
+        },
+        {
+            "name": "node6",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node6.riscv"
+        },
+        {
+            "name": "node7",
+            "bootbinary": "../../../../../tests/build/pytorch-listener-node7.riscv"
+        }
+    ]
+}
