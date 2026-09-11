@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from time import strftime, gmtime
+from time import strftime, localtime
 import pprint
 import logging
 import sys
@@ -55,7 +55,7 @@ class BuildConfigFile:
         if args.launchtime:
             launch_time = args.launchtime
         else:
-            launch_time = strftime("%Y-%m-%d--%H-%M-%S", gmtime())
+            launch_time = strftime("%Y-%m-%d--%H-%M-%S", localtime())
 
         self.args = args
 

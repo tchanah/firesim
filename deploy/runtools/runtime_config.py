@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from datetime import timedelta
-from time import strftime, gmtime
+from time import strftime, localtime
 import pprint
 import logging
 import yaml
@@ -1117,7 +1117,7 @@ class RuntimeConfig:
     def __init__(self, args: argparse.Namespace) -> None:
         """This reads runtime configuration files, massages them into formats that
         the rest of the manager expects, and keeps track of other info."""
-        self.launch_time = strftime("%Y-%m-%d--%H-%M-%S", gmtime())
+        self.launch_time = strftime("%Y-%m-%d--%H-%M-%S", localtime())
 
         self.args = args
 

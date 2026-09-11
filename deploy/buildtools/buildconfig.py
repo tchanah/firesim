@@ -3,7 +3,7 @@ from enum import Enum, auto
 import sys
 import logging
 
-from time import strftime, gmtime
+from time import strftime, localtime
 import pprint
 import yaml
 from pathlib import Path

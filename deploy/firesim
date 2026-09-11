@@ -6,7 +6,7 @@ import sys
 import os
 import signal
 import argparse
-from time import strftime, gmtime
+from time import strftime, localtime
 import logging
 import random
 import argcomplete # type: ignore
@@ -488,7 +488,7 @@ if __name__ == '__main__':
     # logging setup
     def logfilename() -> str:
         """ Construct a unique log file name from: date + 16 char random. """
-        timeline = strftime("%Y-%m-%d--%H-%M-%S", gmtime())
+        timeline = strftime("%Y-%m-%d--%H-%M-%S", localtime())
         randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
         return timeline + "-" + args.task + "-" + randname + ".log"
 
