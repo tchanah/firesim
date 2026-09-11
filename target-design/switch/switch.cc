@@ -80,11 +80,13 @@ uint64_t this_iter_cycles_start = 0;
 #include "shmemport.h"
 #include "socketport.h"
 #include "sshport.h"
+#include "udpport.h"
 
 // TODO: replace these port mapping hacks with a mac -> port mapping,
 // could be hardcoded
 
 BasePort *ports[NUMPORTS];
+static UdpPacketInjector *udp_injector = NULL;
 
 static FILE *capture;
 
@@ -196,7 +198,11 @@ void do_fast_switching() {
       }
       free(tsp);
     } else {
-      ports[send_to_port]->outputqueue.push(tsp);
+      // Packets for a PyTorch host registered over UDP leave the simulation here
+      if (udp_injector && udp_injector->intercept_and_forward(tsp, send_to_port))
+        free(tsp);
+      else
+        ports[send_to_port]->outputqueue.push(tsp);
     }
   }
 
@@ -269,6 +275,9 @@ int main(int argc, char *argv[]) {
   }
 #endif
 
+  // Gloo's UDPmod transport sends to this port (UDP_MOD_PORT in pair.cc)
+  udp_injector = new UdpPacketInjector(5684);
+
   while (true) {
 
     // handle sends
@@ -286,6 +295,17 @@ int main(int argc, char *argv[]) {
 #pragma omp parallel for
     for (int port = 0; port < NUMPORTS; port++) {
       ports[port]->tick_pre();
+    }
+
+    // Inject packets from registered PyTorch hosts before switching consumes the queues
+    for (auto const &pair : udp_injector->poll()) {
+      switchpacket *sp = pair.second;
+      if (pair.first < NUMPORTS) {
+        sp->timestamp = this_iter_cycles_start + SWITCHLATENCY;
+        ports[pair.first]->outputqueue.push(sp);
+      } else {
+        free(sp);
+      }
     }
 
     do_fast_switching();
